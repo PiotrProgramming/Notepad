@@ -118,31 +118,32 @@
         
         .pencil-case {
             position: absolute;
-            top: -60px;
+            top: -70px;
             right: 20px;
-            width: 200px;
-            height: 50px;
-            background: #8b4513;
-            border-radius: 25px;
+            width: 300px;
+            height: 60px;
+            background: linear-gradient(to bottom, #8b4513, #5d2906);
+            border-radius: 8px;
             display: flex;
             justify-content: space-around;
             align-items: center;
             padding: 0 15px;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
             border: 2px solid #5d2906;
             z-index: 10;
         }
         
         .tool-btn {
-            width: 30px;
-            height: 30px;
-            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            border-radius: 5px;
             border: none;
             cursor: pointer;
             display: flex;
             justify-content: center;
             align-items: center;
-            font-size: 14px;
+            font-size: 16px;
+            font-weight: bold;
             transition: all 0.2s ease;
             background: #f5f5dc;
             color: #8b4513;
@@ -152,6 +153,7 @@
         .tool-btn:hover {
             transform: scale(1.1);
             background: #fffaf0;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
         }
         
         .tool-btn.active {
@@ -238,10 +240,17 @@
             }
             
             .pencil-case {
-                top: -70px;
+                top: -80px;
                 left: 50%;
                 transform: translateX(-50%);
-                width: 250px;
+                width: 280px;
+                height: 50px;
+            }
+            
+            .tool-btn {
+                width: 35px;
+                height: 35px;
+                font-size: 14px;
             }
             
             .notepad-footer {
@@ -401,7 +410,7 @@
             
             notepad.value = beforeText + formattedText + afterText;
             notepad.focus();
-            notepad.setSelectionRange(start + formattedText.length - (formattedText.length - selectedText.length), start + formattedText.length - (formattedText.length - selectedText.length));
+            notepad.setSelectionRange(start + 2, start + 2 + selectedText.length);
             updateStats();
         }
         
