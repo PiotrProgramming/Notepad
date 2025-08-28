@@ -69,6 +69,7 @@
         .tools-container {
             display: flex;
             gap: 12px;
+            flex: 1;
         }
         
         .tool-btn {
@@ -132,6 +133,53 @@
         
         .tool-btn#highlightBtn:active {
             background: #f59e0b;
+        }
+        
+        .pages-container {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+        }
+        
+        .page-btn {
+            width: 30px;
+            height: 30px;
+            border-radius: 0;
+            border: none;
+            cursor: pointer;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 16px;
+            font-weight: normal;
+            transition: all 0.2s ease;
+            background: #dc2626;
+            color: white;
+            border: 1px solid #991b1b;
+            box-shadow: 
+                0 1px 2px rgba(0, 0, 0, 0.2),
+                inset 0 1px 1px rgba(255, 255, 255, 0.1);
+        }
+        
+        .page-btn:hover {
+            background: #ef4444;
+            box-shadow: 
+                0 1px 3px rgba(0, 0, 0, 0.3),
+                inset 0 1px 1px rgba(255, 255, 255, 0.2);
+        }
+        
+        .page-btn:active {
+            background: #b91c1c;
+            box-shadow: 
+                inset 0 1px 2px rgba(0, 0, 0, 0.2);
+        }
+        
+        .page-counter {
+            color: white;
+            font-size: 14px;
+            font-weight: bold;
+            min-width: 60px;
+            text-align: center;
         }
         
         .notepad-container {
@@ -287,13 +335,24 @@
             }
             
             .tools-container {
-                gap: 10px;
+                gap: 8px;
             }
             
             .tool-btn {
                 width: 38px;
                 height: 38px;
                 font-size: 16px;
+            }
+            
+            .page-btn {
+                width: 28px;
+                height: 28px;
+                font-size: 14px;
+            }
+            
+            .page-counter {
+                font-size: 12px;
+                min-width: 50px;
             }
             
             .notepad-header {
@@ -329,6 +388,15 @@
                 <button class="tool-btn" id="underlineBtn" title="Underline">U</button>
                 <button class="tool-btn" id="strikeBtn" title="Strikethrough">S</button>
                 <button class="tool-btn" id="highlightBtn" title="Highlight">✏️</button>
+                
+                <div style="flex: 1;"></div>
+                
+                <div class="pages-container">
+                    <button class="page-btn" id="prevPageBtn" title="Previous Page">←</button>
+                    <div class="page-counter" id="pageCounter">Page 1/1</div>
+                    <button class="page-btn" id="nextPageBtn" title="Next Page">→</button>
+                    <button class="page-btn" id="newPageBtn" title="New Page">+</button>
+                </div>
             </div>
         </div>
         
@@ -390,16 +458,73 @@
         const underlineBtn = document.getElementById('underlineBtn');
         const strikeBtn = document.getElementById('strikeBtn');
         const highlightBtn = document.getElementById('highlightBtn');
+        const prevPageBtn = document.getElementById('prevPageBtn');
+        const nextPageBtn = document.getElementById('nextPageBtn');
+        const newPageBtn = document.getElementById('newPageBtn');
+        const pageCounter = document.getElementById('pageCounter');
         
         // Set current date
         const now = new Date();
         const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
         currentDate.textContent = now.toLocaleDateString('en-US', options);
         
-        // Load saved content from localStorage if available
-        if (localStorage.getItem('notepadContent')) {
-            notepad.value = localStorage.getItem('notepadContent');
+        // Pages management
+        let pages = [{ id: 1, content: '', title: 'Page 1' }];
+        let currentPageIndex = 0;
+        
+        // Load saved pages from localStorage if available
+        if (localStorage.getItem('notepadPages')) {
+            pages = JSON.parse(localStorage.getItem('notepadPages'));
+            currentPageIndex = 0;
+        }
+        
+        // Initialize current page
+        notepad.value = pages[currentPageIndex].content;
+        updatePageCounter();
+        updateStats();
+        
+        // Update page counter display
+        function updatePageCounter() {
+            pageCounter.textContent = `Page ${currentPageIndex + 1}/${pages.length}`;
+        }
+        
+        // Save current page content
+        function saveCurrentPage() {
+            pages[currentPageIndex].content = notepad.value;
+        }
+        
+        // Load page content
+        function loadPage() {
+            notepad.value = pages[currentPageIndex].content;
+            updatePageCounter();
             updateStats();
+        }
+        
+        // Go to previous page
+        function prevPage() {
+            if (currentPageIndex > 0) {
+                saveCurrentPage();
+                currentPageIndex--;
+                loadPage();
+            }
+        }
+        
+        // Go to next page
+        function nextPage() {
+            if (currentPageIndex < pages.length - 1) {
+                saveCurrentPage();
+                currentPageIndex++;
+                loadPage();
+            }
+        }
+        
+        // Create new page
+        function newPage() {
+            saveCurrentPage();
+            const newPageId = Math.max(...pages.map(p => p.id)) + 1;
+            pages.push({ id: newPageId, content: '', title: `Page ${newPageId}` });
+            currentPageIndex = pages.length - 1;
+            loadPage();
         }
         
         // Update character and word count
@@ -412,9 +537,10 @@
             wordCount.textContent = `Words: ${words}`;
         }
         
-        // Save content to localStorage
-        function saveContent() {
-            localStorage.setItem('notepadContent', notepad.value);
+        // Save all pages to localStorage
+        function saveAllPages() {
+            saveCurrentPage();
+            localStorage.setItem('notepadPages', JSON.stringify(pages));
             showMessage();
         }
         
@@ -426,12 +552,13 @@
             }, 2000);
         }
         
-        // Clear notepad
+        // Clear current page
         function clearNotepad() {
-            if (confirm('Are you sure you want to clear all notes?')) {
+            if (confirm('Are you sure you want to clear this page?')) {
                 notepad.value = '';
+                pages[currentPageIndex].content = '';
                 updateStats();
-                saveContent();
+                saveAllPages();
             }
         }
         
@@ -489,7 +616,7 @@
         
         // Event listeners
         notepad.addEventListener('input', updateStats);
-        saveBtn.addEventListener('click', saveContent);
+        saveBtn.addEventListener('click', saveAllPages);
         clearBtn.addEventListener('click', clearNotepad);
         
         // Formatting button listeners
@@ -499,8 +626,19 @@
         strikeBtn.addEventListener('click', () => formatText('strike'));
         highlightBtn.addEventListener('click', () => formatText('highlight'));
         
+        // Page navigation listeners
+        prevPageBtn.addEventListener('click', prevPage);
+        nextPageBtn.addEventListener('click', nextPage);
+        newPageBtn.addEventListener('click', newPage);
+        
         // Initialize stats
         updateStats();
+        
+        // Auto-save when leaving page
+        window.addEventListener('beforeunload', function() {
+            saveCurrentPage();
+            localStorage.setItem('notepadPages', JSON.stringify(pages));
+        });
     </script>
 </body>
 </html>
