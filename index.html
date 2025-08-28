@@ -36,52 +36,93 @@
             position: relative;
             width: 100%;
             max-width: 700px;
-            padding: 100px 30px 30px 30px;
+            padding: 120px 30px 30px 30px;
         }
         
         .pencil-case {
             position: absolute;
             top: 20px;
             right: 50px;
-            width: 320px;
-            height: 70px;
-            background: linear-gradient(to bottom, #8b4513, #5d2906);
-            border-radius: 10px;
+            width: 350px;
+            height: 80px;
+            background: linear-gradient(145deg, #c0c0c0, #a0a0a0);
+            border-radius: 12px;
             display: flex;
             justify-content: space-around;
             align-items: center;
-            padding: 0 15px;
-            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
-            border: 3px solid #5d2906;
+            padding: 0 20px;
+            box-shadow: 
+                0 8px 20px rgba(0, 0, 0, 0.3),
+                inset 0 2px 4px rgba(255, 255, 255, 0.5),
+                inset 0 -2px 4px rgba(0, 0, 0, 0.2);
+            border: 3px solid #808080;
             z-index: 10;
         }
         
-        .tool-btn {
-            width: 45px;
-            height: 45px;
+        .pencil-case::before {
+            content: '';
+            position: absolute;
+            top: 5px;
+            left: 5px;
+            right: 5px;
+            bottom: 5px;
+            border: 1px solid rgba(255, 255, 255, 0.3);
             border-radius: 8px;
+            pointer-events: none;
+        }
+        
+        .tool-btn {
+            width: 50px;
+            height: 50px;
+            border-radius: 10px;
             border: none;
             cursor: pointer;
             display: flex;
             justify-content: center;
             align-items: center;
-            font-size: 20px;
+            font-size: 22px;
             font-weight: bold;
             transition: all 0.2s ease;
-            background: #f5f5dc;
-            color: #8b4513;
-            border: 2px solid #d2b48c;
+            background: linear-gradient(145deg, #f0f0f0, #d0d0d0);
+            color: #333;
+            border: 2px solid #a0a0a0;
+            box-shadow: 
+                0 3px 6px rgba(0, 0, 0, 0.2),
+                inset 0 1px 2px rgba(255, 255, 255, 0.8);
         }
         
         .tool-btn:hover {
-            transform: scale(1.1);
-            background: #fffaf0;
-            box-shadow: 0 3px 8px rgba(0, 0, 0, 0.3);
+            transform: translateY(-2px);
+            box-shadow: 
+                0 5px 10px rgba(0, 0, 0, 0.3),
+                inset 0 1px 2px rgba(255, 255, 255, 0.9);
         }
         
-        .tool-btn.active {
-            background: #d2691e;
-            color: white;
+        .tool-btn:active {
+            transform: translateY(1px);
+            box-shadow: 
+                0 1px 3px rgba(0, 0, 0, 0.2),
+                inset 0 1px 2px rgba(0, 0, 0, 0.1);
+        }
+        
+        .tool-btn#boldBtn {
+            font-weight: 900;
+        }
+        
+        .tool-btn#italicBtn {
+            font-style: italic;
+        }
+        
+        .tool-btn#underlineBtn {
+            text-decoration: underline;
+        }
+        
+        .tool-btn#strikeBtn {
+            text-decoration: line-through;
+        }
+        
+        .tool-btn#highlightBtn {
+            background: linear-gradient(145deg, #ffeb3b, #ffc107);
         }
         
         .notepad-container {
@@ -225,21 +266,21 @@
         
         @media (max-width: 600px) {
             .notepad-wrapper {
-                padding: 120px 15px 15px 15px;
+                padding: 140px 15px 15px 15px;
             }
             
             .pencil-case {
                 top: 20px;
                 left: 50%;
                 transform: translateX(-50%);
-                width: 280px;
-                height: 60px;
+                width: 300px;
+                height: 70px;
             }
             
             .tool-btn {
-                width: 40px;
-                height: 40px;
-                font-size: 18px;
+                width: 45px;
+                height: 45px;
+                font-size: 20px;
             }
             
             .notepad-header {
@@ -269,21 +310,11 @@
 <body>
     <div class="notepad-wrapper">
         <div class="pencil-case">
-            <button class="tool-btn" id="boldBtn" title="Bold">
-                <b>B</b>
-            </button>
-            <button class="tool-btn" id="italicBtn" title="Italic">
-                <i>I</i>
-            </button>
-            <button class="tool-btn" id="underlineBtn" title="Underline">
-                <u>U</u>
-            </button>
-            <button class="tool-btn" id="strikeBtn" title="Strikethrough">
-                <s>S</s>
-            </button>
-            <button class="tool-btn" id="highlightBtn" title="Highlight">
-                 highlight
-            </button>
+            <button class="tool-btn" id="boldBtn" title="Bold">B</button>
+            <button class="tool-btn" id="italicBtn" title="Italic">I</button>
+            <button class="tool-btn" id="underlineBtn" title="Underline">U</button>
+            <button class="tool-btn" id="strikeBtn" title="Strikethrough">S</button>
+            <button class="tool-btn" id="highlightBtn" title="Highlight">H</button>
         </div>
         
         <div class="notepad-container">
