@@ -98,6 +98,7 @@
         .notepad-content {
             padding: 25px 20px 20px 50px;
             min-height: 400px;
+            position: relative;
         }
         
         #notepad {
@@ -112,6 +113,50 @@
             color: #333;
             font-family: 'Courier New', Courier, monospace;
             user-select: text;
+            padding: 10px;
+        }
+        
+        .pencil-case {
+            position: absolute;
+            top: -60px;
+            right: 20px;
+            width: 200px;
+            height: 50px;
+            background: #8b4513;
+            border-radius: 25px;
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            padding: 0 15px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+            border: 2px solid #5d2906;
+            z-index: 10;
+        }
+        
+        .tool-btn {
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            border: none;
+            cursor: pointer;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 14px;
+            transition: all 0.2s ease;
+            background: #f5f5dc;
+            color: #8b4513;
+            border: 1px solid #d2b48c;
+        }
+        
+        .tool-btn:hover {
+            transform: scale(1.1);
+            background: #fffaf0;
+        }
+        
+        .tool-btn.active {
+            background: #d2691e;
+            color: white;
         }
         
         .notepad-footer {
@@ -192,6 +237,13 @@
                 padding-left: 45px;
             }
             
+            .pencil-case {
+                top: -70px;
+                left: 50%;
+                transform: translateX(-50%);
+                width: 250px;
+            }
+            
             .notepad-footer {
                 padding-left: 45px;
                 flex-direction: column;
@@ -234,6 +286,13 @@
             </div>
             
             <div class="notepad-content">
+                <div class="pencil-case">
+                    <button class="tool-btn" id="boldBtn" title="Bold">B</button>
+                    <button class="tool-btn" id="italicBtn" title="Italic">I</button>
+                    <button class="tool-btn" id="underlineBtn" title="Underline">U</button>
+                    <button class="tool-btn" id="strikeBtn" title="Strikethrough">S</button>
+                    <button class="tool-btn" id="highlightBtn" title="Highlight">H</button>
+                </div>
                 <textarea id="notepad" placeholder="Start writing your thoughts here..."></textarea>
             </div>
             
@@ -260,6 +319,11 @@
         const wordCount = document.getElementById('wordCount');
         const saveMessage = document.getElementById('saveMessage');
         const currentDate = document.getElementById('currentDate');
+        const boldBtn = document.getElementById('boldBtn');
+        const italicBtn = document.getElementById('italicBtn');
+        const underlineBtn = document.getElementById('underlineBtn');
+        const strikeBtn = document.getElementById('strikeBtn');
+        const highlightBtn = document.getElementById('highlightBtn');
         
         // Set current date
         const now = new Date();
@@ -305,6 +369,42 @@
             }
         }
         
+        // Text formatting functions
+        function formatText(command) {
+            const start = notepad.selectionStart;
+            const end = notepad.selectionEnd;
+            const selectedText = notepad.value.substring(start, end);
+            const beforeText = notepad.value.substring(0, start);
+            const afterText = notepad.value.substring(end);
+            
+            let formattedText = '';
+            
+            switch(command) {
+                case 'bold':
+                    formattedText = `**${selectedText}**`;
+                    break;
+                case 'italic':
+                    formattedText = `*${selectedText}*`;
+                    break;
+                case 'underline':
+                    formattedText = `_${selectedText}_`;
+                    break;
+                case 'strike':
+                    formattedText = `~~${selectedText}~~`;
+                    break;
+                case 'highlight':
+                    formattedText = `==${selectedText}==`;
+                    break;
+                default:
+                    formattedText = selectedText;
+            }
+            
+            notepad.value = beforeText + formattedText + afterText;
+            notepad.focus();
+            notepad.setSelectionRange(start + formattedText.length - (formattedText.length - selectedText.length), start + formattedText.length - (formattedText.length - selectedText.length));
+            updateStats();
+        }
+        
         // Handle Ctrl+A to select only textarea content
         document.addEventListener('keydown', function(e) {
             if (e.ctrlKey && e.key === 'a') {
@@ -325,6 +425,13 @@
         notepad.addEventListener('input', updateStats);
         saveBtn.addEventListener('click', saveContent);
         clearBtn.addEventListener('click', clearNotepad);
+        
+        // Formatting button listeners
+        boldBtn.addEventListener('click', () => formatText('bold'));
+        italicBtn.addEventListener('click', () => formatText('italic'));
+        underlineBtn.addEventListener('click', () => formatText('underline'));
+        strikeBtn.addEventListener('click', () => formatText('strike'));
+        highlightBtn.addEventListener('click', () => formatText('highlight'));
         
         // Initialize stats
         updateStats();
