@@ -29,6 +29,7 @@
             justify-content: center;
             align-items: center;
             padding: 20px;
+            user-select: none;
         }
         
         .notepad-wrapper {
@@ -110,6 +111,7 @@
             outline: none;
             color: #333;
             font-family: 'Courier New', Courier, monospace;
+            user-select: text;
         }
         
         .notepad-footer {
@@ -136,6 +138,7 @@
             cursor: pointer;
             font-size: 0.8rem;
             transition: all 0.2s ease;
+            user-select: none;
         }
         
         .control-btn:hover {
@@ -155,6 +158,7 @@
             transform: translateX(200%);
             transition: transform 0.3s ease;
             border: 1px solid #228b22;
+            user-select: none;
         }
         
         .save-message.show {
@@ -300,6 +304,22 @@
                 saveContent();
             }
         }
+        
+        // Handle Ctrl+A to select only textarea content
+        document.addEventListener('keydown', function(e) {
+            if (e.ctrlKey && e.key === 'a') {
+                // Check if the active element is the textarea
+                if (document.activeElement === notepad) {
+                    // Let the default behavior handle it (select all in textarea)
+                    return;
+                } else {
+                    // If not in textarea, focus and select all in textarea
+                    e.preventDefault();
+                    notepad.focus();
+                    notepad.select();
+                }
+            }
+        });
         
         // Event listeners
         notepad.addEventListener('input', updateStats);
