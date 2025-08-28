@@ -36,12 +36,12 @@
             position: relative;
             width: 100%;
             max-width: 700px;
-            padding: 100px 30px 30px 30px;
+            padding: 90px 30px 30px 30px;
         }
         
         .pencil-case {
             position: absolute;
-            top: 20px;
+            top: 15px;
             left: 30px;
             right: 30px;
             height: 70px;
@@ -50,10 +50,6 @@
             display: flex;
             align-items: center;
             padding: 0 25px;
-            box-shadow: 
-                0 6px 15px rgba(0, 0, 0, 0.3),
-                inset 0 2px 4px rgba(255, 255, 255, 0.1),
-                inset 0 -2px 4px rgba(0, 0, 0, 0.3);
             border: 3px solid #0f1e3a;
             z-index: 10;
         }
@@ -91,21 +87,18 @@
             color: white;
             border: 2px solid #1e40af;
             box-shadow: 
-                0 2px 4px rgba(0, 0, 0, 0.3),
                 inset 0 1px 1px rgba(255, 255, 255, 0.2);
         }
         
         .tool-btn:hover {
             transform: translateY(-1px);
             box-shadow: 
-                0 3px 6px rgba(0, 0, 0, 0.4),
                 inset 0 1px 1px rgba(255, 255, 255, 0.3);
         }
         
         .tool-btn:active {
             transform: translateY(0);
             box-shadow: 
-                0 1px 2px rgba(0, 0, 0, 0.2),
                 inset 0 1px 1px rgba(0, 0, 0, 0.1);
         }
         
@@ -271,7 +264,7 @@
         
         @media (max-width: 600px) {
             .notepad-wrapper {
-                padding: 120px 15px 15px 15px;
+                padding: 110px 15px 15px 15px;
             }
             
             .pencil-case {
@@ -279,6 +272,7 @@
                 right: 15px;
                 height: 60px;
                 padding: 0 15px;
+                top: 10px;
             }
             
             .tools-container {
