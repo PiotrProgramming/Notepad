@@ -36,7 +36,52 @@
             position: relative;
             width: 100%;
             max-width: 700px;
-            padding: 30px;
+            padding: 100px 30px 30px 30px;
+        }
+        
+        .pencil-case {
+            position: absolute;
+            top: 20px;
+            right: 50px;
+            width: 320px;
+            height: 70px;
+            background: linear-gradient(to bottom, #8b4513, #5d2906);
+            border-radius: 10px;
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            padding: 0 15px;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+            border: 3px solid #5d2906;
+            z-index: 10;
+        }
+        
+        .tool-btn {
+            width: 45px;
+            height: 45px;
+            border-radius: 8px;
+            border: none;
+            cursor: pointer;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 20px;
+            font-weight: bold;
+            transition: all 0.2s ease;
+            background: #f5f5dc;
+            color: #8b4513;
+            border: 2px solid #d2b48c;
+        }
+        
+        .tool-btn:hover {
+            transform: scale(1.1);
+            background: #fffaf0;
+            box-shadow: 0 3px 8px rgba(0, 0, 0, 0.3);
+        }
+        
+        .tool-btn.active {
+            background: #d2691e;
+            color: white;
         }
         
         .notepad-container {
@@ -116,51 +161,6 @@
             padding: 10px;
         }
         
-        .pencil-case {
-            position: absolute;
-            top: -70px;
-            right: 20px;
-            width: 300px;
-            height: 60px;
-            background: linear-gradient(to bottom, #8b4513, #5d2906);
-            border-radius: 8px;
-            display: flex;
-            justify-content: space-around;
-            align-items: center;
-            padding: 0 15px;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
-            border: 2px solid #5d2906;
-            z-index: 10;
-        }
-        
-        .tool-btn {
-            width: 40px;
-            height: 40px;
-            border-radius: 5px;
-            border: none;
-            cursor: pointer;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            font-size: 16px;
-            font-weight: bold;
-            transition: all 0.2s ease;
-            background: #f5f5dc;
-            color: #8b4513;
-            border: 1px solid #d2b48c;
-        }
-        
-        .tool-btn:hover {
-            transform: scale(1.1);
-            background: #fffaf0;
-            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
-        }
-        
-        .tool-btn.active {
-            background: #d2691e;
-            color: white;
-        }
-        
         .notepad-footer {
             padding: 15px 20px 15px 50px;
             background: #f5f5dc;
@@ -225,7 +225,21 @@
         
         @media (max-width: 600px) {
             .notepad-wrapper {
-                padding: 15px;
+                padding: 120px 15px 15px 15px;
+            }
+            
+            .pencil-case {
+                top: 20px;
+                left: 50%;
+                transform: translateX(-50%);
+                width: 280px;
+                height: 60px;
+            }
+            
+            .tool-btn {
+                width: 40px;
+                height: 40px;
+                font-size: 18px;
             }
             
             .notepad-header {
@@ -237,20 +251,6 @@
             
             .notepad-content {
                 padding-left: 45px;
-            }
-            
-            .pencil-case {
-                top: -80px;
-                left: 50%;
-                transform: translateX(-50%);
-                width: 280px;
-                height: 50px;
-            }
-            
-            .tool-btn {
-                width: 35px;
-                height: 35px;
-                font-size: 14px;
             }
             
             .notepad-footer {
@@ -268,6 +268,24 @@
 </head>
 <body>
     <div class="notepad-wrapper">
+        <div class="pencil-case">
+            <button class="tool-btn" id="boldBtn" title="Bold">
+                <b>B</b>
+            </button>
+            <button class="tool-btn" id="italicBtn" title="Italic">
+                <i>I</i>
+            </button>
+            <button class="tool-btn" id="underlineBtn" title="Underline">
+                <u>U</u>
+            </button>
+            <button class="tool-btn" id="strikeBtn" title="Strikethrough">
+                <s>S</s>
+            </button>
+            <button class="tool-btn" id="highlightBtn" title="Highlight">
+                 highlight
+            </button>
+        </div>
+        
         <div class="notepad-container">
             <div class="spiral-binding">
                 <div class="spiral-hole"></div>
@@ -295,13 +313,6 @@
             </div>
             
             <div class="notepad-content">
-                <div class="pencil-case">
-                    <button class="tool-btn" id="boldBtn" title="Bold">B</button>
-                    <button class="tool-btn" id="italicBtn" title="Italic">I</button>
-                    <button class="tool-btn" id="underlineBtn" title="Underline">U</button>
-                    <button class="tool-btn" id="strikeBtn" title="Strikethrough">S</button>
-                    <button class="tool-btn" id="highlightBtn" title="Highlight">H</button>
-                </div>
                 <textarea id="notepad" placeholder="Start writing your thoughts here..."></textarea>
             </div>
             
